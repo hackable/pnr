@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>pnr.me</title>
-        <link rel="stylesheet" href="http://blog.pnr.me/theme/css/main.css" />
+	<meta property="og:site_name" content="technical blog of pnr.me"/>
+	<title>technical blog of pnr.me</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+	<meta property="og:image" content="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1412239_168537233354082_341502953_o.jpg"/>
 
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -12,35 +14,104 @@
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="http://blog.pnr.me/">pnr.me </a></h1>
+                <h1><a href="/">technical blog of pnr.me </a></h1>
                 <nav><ul>
                     <li><a href="http://pnr.me">pnr.me</a></li>
-                    <li><a href="http://blog.pnr.me/category/misc.html">misc</a></li>
+                    <li><a href="/category/misc.html">misc</a></li>
+                    <li><a href="/category/tech.html">tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://blog.pnr.me/why-pnr-me.html">Why pnr.me?</a></h1>
+                    <h1 class="entry-title"><a href="/no-more-internal-service-error.html">How we solved the immense pain of error code 500:internal service error</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-11-27T00:00:00">
+                Wed 27 November 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
+        </address>
+<p>In <a href="/category/tech.html">tech</a>. </p>
+<p>tags: <a href="/tag/500.html">500</a><a href="/tag/error.html">error</a><a href="/tag/internal-service-error.html">internal service error</a></p>
+</footer><!-- /.post-info --><p>We explained earlier <a href="/how-we-got-our-first-thousand-visitors.html" title="how our servers crashed after pnr.me was shared by Alok Rodinhood Kejriwal">how our servers went down crashing</a>, after being shared by <a href="https://www.facebook.com/rodinhood" title="Alok Rodinhood Kejriwal">mr rodinhood</a>. We needed a fix and we needed it fast</p>
+<h2>What the problem was not</h2>
+<p>One of our first assumption was that the error had something to do with apache. Reading a lot of hackernews makes you believe that apache is the culprit behind any server side error and nginx is the solution. But as we deepdived into the problem some things became very clear</p>
+<ul>
+<li>Our apache server was never throttled</li>
+<li>What went down was the application itself, to be more clear the <a href="http://pnr.me/predictor" title="pnr prediction engine">prediction engine of pnr.me</a></li>
+</ul>
+<h2>skeleton of pnr.me</h2>
+<p>pnr.me has two main components, a flask powered web app and a python predictor deamon communicating with each other using zmq. There is good reason why we arrived at this design. Predictor deamon is a number crunching application which required good amount of memory. To make matters worse, it was using <a href="http://www.scipy.org/" title="scientific python">scipy</a> which is a memory heavy python library. Hence it was not advisable to have the predictor application embedded in the web app as mod_wsgi will have a tough time serving this memory heavy app. </p>
+<p>Now call it bad code, our predictor deamon was throwing some exception and dying at regular intervals. To make the matter worse, we had not set up any kind of monitoring mechanism which would inform us when the predictor deamon goes down. As a ugly hack, we stumbled upon this beatiful code which would respawn a deamon if it gets killed or if it is stopped by some random reason</p>
+<div class="highlight"><pre><span class="k">until</span> <span class="o">(</span>python predictor_deamon.py<span class="o">)</span>; <span class="k">do</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">&quot;Server &#39;myserver&#39; crashed with exit code $?.  Respawning..&quot;</span> &gt;&amp;2
+    sleep 1
+<span class="k">done</span>
+</pre></div>
+
+
+<p>Internal service errors would still show for users but atleast it wouldn`t affect others from accessing the website</p>
+<h2>The web app</h2>
+<p>Once internal server error of predictor deamon got almost resolved, we were quite sure that we would not get any more internal service errors. As the great <a href="http://www.imdb.com/character/ch0000164/quotes" title="Thorin Oakenshield">Thorin Oakenshield</a> once said "I've never been so wrong in all my life".</p>
+<p>We deploy <a href="http://pnr.me" title="pnr.me">pnr.me</a> after doing basic testing. But these basic tests cannot handle blackswan errors like the one i recently faced. I was getting pymongo.errors.OperationFailure: quota exceeded error and because of this, the webapp was throwing an internal service error. How did pnr.me solve pymongo.errors.OperationFailure: quota exceeded when using MongoLab is a story for another blog post.</p>
+<p>We cannot solve all Blackswan events however hard we try. We needed an alert mechanism by which we could react fast to these errors. By following the beautiful articles on <a href="http://flask.pocoo.org/docs/errorhandling/" title="how to send automated mails when flask server throws an error">how to set up a SMTPHandler for flask</a> and how to use <a href="http://mynthon.net/howto/-/python/python%20-%20logging.SMTPHandler-how-to-use-gmail-smtp-server.txt" title="How to use Gmail SMTP server with logging module">GMail SMTP server with logging module</a>, we created a alert mechanism which would mail us the second any error is thrown by the flask web server</p>
+<h2>Final setup and improvement</h2>
+<ul>
+<li>We will be alerted by email when some error is thrown by flask.</li>
+<li>Our predictor deamon will respawn within a second of dying. We can fix the error later as all the errors are anyways logged</li>
+<li>A big TODO is to create such alerts for python jobs which run independant of the flask web service</li>
+</ul><p>There are <a href="/no-more-internal-service-error.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/how-we-got-our-first-thousand-visitors.html" rel="bookmark"
+                           title="Permalink to How we got our first thousand visitors">How we got our first thousand visitors</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-11-20T00:00:00">
+                Wed 20 November 2013
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>. </p>
+<p>tags: <a href="/tag/marketing.html">marketing</a><a href="/tag/hackerstreet.html">hackerstreet</a><a href="/tag/rodinhood.html">rodinhood</a></p>
+</footer><!-- /.post-info -->                <p>After pnr.me was built, the next objective was to publicize it to potential users. We decided to publicize by posting in 4 different websites. We take you through our successes and failures</p>
+                <a class="readmore" href="/how-we-got-our-first-thousand-visitors.html">read more</a>
+<p>There are <a href="/how-we-got-our-first-thousand-visitors.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/why-pnr-me-was-created-and-how-does-it-work.html" rel="bookmark"
+                           title="Permalink to Why we created pnr.me and how does it work?">Why we created pnr.me and how does it work?</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2013-11-18T00:00:00">
                 Mon 18 November 2013
         </abbr>
 
         <address class="vcard author">
-                By <a class="url fn" href="http://blog.pnr.me/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
+                By <a class="url fn" href="/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
         </address>
-<p>In <a href="http://blog.pnr.me/category/misc.html">misc</a>. </p>
-<p>tags: <a href="http://blog.pnr.me/tag/introduction.html">introduction</a><a href="http://blog.pnr.me/tag/pnr.html">pnr</a></p>
-</footer><!-- /.post-info --><p><a href="http://pnr.me/" title="pnr.me">pnr.me</a> was created to ease the difficulty passengers were having in predicting whether or not their waiting list train tickets will get confirmed. Here is a brief introduction to the problem and how we are trying to solve this problem</p>
-<h2>The problem</h2>
-<p>Indian railways is the biggest mover of people and goods in India. The demand far exceeds supply and it is very usual for busy trains to have a waiting list of more than 500. The holders of these waiting list tickets do not have a right to board the train and will only get that privilege if some one with a confirmed ticket cancels his/her ticket.</p>
-<p>How would you know whether your waiting list will get confirmed or not?. Simple answer is no, you cannot. But by looking at past data, one can predict with reasonable accuracy whether waiting list ticket will get confirmed or not.</p>
-<h2>The solution</h2>
-<p><a href="http://pnr.me/predictor" title="pnr prediction">pnr prediction tool</a> takes pnr number as input and tries to predict the ticket`s final charting status. The prediction tool works by looking at similar pnr numbers and how their waiting list changed over time. It uses this data to make a sufficiently <a href="http://pnr.me/accuracy" title="prediction accuracy">accurate prediction</a></p>
-<h2>Some stats</h2>
-<p>Every year indian railways generate around 750 crores as cancellation charges. Every 1 in 3 train tickets booked are cancelled. <a href="http://pnr.me/" title="pnr.me">pnr.me</a> hopes to reduce that number.</p><p>There are <a href="http://blog.pnr.me/why-pnr-me.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
+<p>In <a href="/category/misc.html">misc</a>. </p>
+<p>tags: <a href="/tag/introduction.html">introduction</a><a href="/tag/pnr.html">pnr</a></p>
+</footer><!-- /.post-info -->                <p>pnr.me was created to help Indian Railways passengers to better predict their final pnr charting status. The problem we are trying to solve and solution are briefly discussed here</p>
+                <a class="readmore" href="/why-pnr-me-was-created-and-how-does-it-work.html">read more</a>
+<p>There are <a href="/why-pnr-me-was-created-and-how-does-it-work.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
         <section id="extras" class="body">
