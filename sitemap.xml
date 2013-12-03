@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://blog.pnr.me/index.html</loc>
-<lastmod>2013-11-28T19:45:46-00:00</lastmod>
+<lastmod>2013-12-03T19:12:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.pnr.me/archives.html</loc>
-<lastmod>2013-11-28T19:45:46-00:00</lastmod>
+<lastmod>2013-12-03T19:12:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.pnr.me/tags.html</loc>
-<lastmod>2013-11-28T19:45:46-00:00</lastmod>
+<lastmod>2013-12-03T19:12:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.pnr.me/categories.html</loc>
-<lastmod>2013-11-28T19:45:46-00:00</lastmod>
+<lastmod>2013-12-03T19:12:35-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://blog.pnr.me/visualizing-pnr-changes-over-time-using-flot.html</loc>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -61,14 +68,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://blog.pnr.me/category/tech.html</loc>
-<lastmod>2013-11-27T00:00:00-00:00</lastmod>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://blog.pnr.me/tag/jquery.html</loc>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.pnr.me/tag/pnr.html</loc>
-<lastmod>2013-11-18T00:00:00-00:00</lastmod>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -109,6 +123,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://blog.pnr.me/tag/flot.html</loc>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://blog.pnr.me/tag/graph.html</loc>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://blog.pnr.me/tag/error.html</loc>
 <lastmod>2013-11-27T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -124,7 +152,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://blog.pnr.me/author/salil-panikkaveettil.html</loc>
-<lastmod>2013-11-27T00:00:00-00:00</lastmod>
+<lastmod>2013-12-03T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

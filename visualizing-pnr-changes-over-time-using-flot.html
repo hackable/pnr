@@ -3,9 +3,10 @@
 <head>
         <meta charset="utf-8" />
 	<meta property="og:site_name" content="technical blog of pnr.me"/>
-	<title>technical blog of pnr.me</title>
+	<title>Visualizing pnr changes over time using flot.js</title>
         <link rel="stylesheet" href="http://blog.pnr.me/theme/css/main.css" />
 	<meta property="og:image" content="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/1412239_168537233354082_341502953_o.jpg"/>
+ 	<link rel="author" href="https://plus.google.com/u/0/+SalilPanikkaveettil?rel=author">
 
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -18,13 +19,18 @@
                 <nav><ul>
                     <li><a href="http://pnr.me">pnr.me</a></li>
                     <li><a href="http://blog.pnr.me/category/misc.html">misc</a></li>
-                    <li><a href="http://blog.pnr.me/category/tech.html">tech</a></li>
+                    <li class="active"><a href="http://blog.pnr.me/category/tech.html">tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://blog.pnr.me/visualizing-pnr-changes-over-time-using-flot.html" rel="bookmark"
+           title="Permalink to Visualizing pnr changes over time using flot.js">Visualizing pnr changes over time using flot.js</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://blog.pnr.me/visualizing-pnr-changes-over-time-using-flot.html">Visualizing pnr changes over time using flot.js</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2013-12-03T00:00:00">
                 Tue 03 December 2013
@@ -35,7 +41,7 @@
         </address>
 <p>In <a href="http://blog.pnr.me/category/tech.html">tech</a>. </p>
 <p>tags: <a href="http://blog.pnr.me/tag/flot.html">flot</a><a href="http://blog.pnr.me/tag/pnr.html">pnr</a><a href="http://blog.pnr.me/tag/graph.html">graph</a><a href="http://blog.pnr.me/tag/jquery.html">JQuery</a></p>
-</footer><!-- /.post-info --><p>Around 2 weeks back, <a href="http://pnr.me/predictor" title="instant pnr prediction">pnr prediction tool</a> got heavy criticism from a user. He argued that there was no prediction algorithm being used and the result was just a random prediction. We tried to explain how our algorithm worked and how we use curve fitting to arrive at a reasonably accurate prediction. We also showed him the <a href="http://pnr.me/accuracy" title="accuracy of pnr prediction">accuracy of our pnr prediction</a> and argued that we cannot achieve such a high accuracy by writing any random function. But it was tough to convince him and to his credit, we were not showing any data that we used for prediction in the website.</p>
+</footer><!-- /.post-info -->      <p>Around 2 weeks back, <a href="http://pnr.me/predictor" title="instant pnr prediction">pnr prediction tool</a> got heavy criticism from a user. He argued that there was no prediction algorithm being used and the result was just a random prediction. We tried to explain how our algorithm worked and how we use curve fitting to arrive at a reasonably accurate prediction. We also showed him the <a href="http://pnr.me/accuracy" title="accuracy of pnr prediction">accuracy of our pnr prediction</a> and argued that we cannot achieve such a high accuracy by writing any random function. But it was tough to convince him and to his credit, we were not showing any data that we used for prediction in the website.</p>
 <p>A decision was made to show the user the data we use for prediction. This will help users take an informed decision rather than blindly trusting <a href="http://pnr.me" title="pnr.me">pnr.me</a>. If the user is adventurous enough he can arrive at his own prediction using the data</p>
 <h2>Data</h2>
 <p>The data we want to share with the user is the exact data that we use for prediction. From our database, we select 15 pnr numbers which match the characteristics of the pnr being queried. Each of these pnrs will have information about how the waiting list changed over time and our prediction tool uses this data to arrive at a prediction.</p>
@@ -83,80 +89,24 @@
 <li>Introduced visualization of data used for prediction in <a href="http://pnr.me/to_book_or_not" title="Advices whether to book a railway ticket or not">To book or not</a> and <a href="http://pnr.me/predictor" title="Gives a prediction whether or not your waitlist ticket will get confirmed or not">pnr prediction</a></li>
 <li>Introduced a slightly better algorithm for prediction</li>
 <li><a href="http://pnr.me/to_book_or_not" title="Advices whether to book a railway ticket or not">To book or not</a> page has detailed form fields</li>
-</ul><p>There are <a href="http://blog.pnr.me/visualizing-pnr-changes-over-time-using-flot.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</ul>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "visualizing-pnr-changes-over-time-using-flot.html";
+        var disqus_url = "http://blog.pnr.me/visualizing-pnr-changes-over-time-using-flot.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://pnrme.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://blog.pnr.me/no-more-internal-service-error.html" rel="bookmark"
-                           title="Permalink to How we solved the immense pain of error code 500:internal service error">How we solved the immense pain of error code 500:internal service error</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-11-27T00:00:00">
-                Wed 27 November 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="http://blog.pnr.me/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
-        </address>
-<p>In <a href="http://blog.pnr.me/category/tech.html">tech</a>. </p>
-<p>tags: <a href="http://blog.pnr.me/tag/500.html">500</a><a href="http://blog.pnr.me/tag/error.html">error</a><a href="http://blog.pnr.me/tag/internal-service-error.html">internal service error</a></p>
-</footer><!-- /.post-info -->                <p>How did pnr.me faced a number of internal service errors and how we set out to fix them one by one</p>
-                <a class="readmore" href="http://blog.pnr.me/no-more-internal-service-error.html">read more</a>
-<p>There are <a href="http://blog.pnr.me/no-more-internal-service-error.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://blog.pnr.me/how-we-got-our-first-thousand-visitors.html" rel="bookmark"
-                           title="Permalink to How we got our first thousand visitors">How we got our first thousand visitors</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-11-20T00:00:00">
-                Wed 20 November 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="http://blog.pnr.me/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
-        </address>
-<p>In <a href="http://blog.pnr.me/category/misc.html">misc</a>. </p>
-<p>tags: <a href="http://blog.pnr.me/tag/marketing.html">marketing</a><a href="http://blog.pnr.me/tag/hackerstreet.html">hackerstreet</a><a href="http://blog.pnr.me/tag/rodinhood.html">rodinhood</a></p>
-</footer><!-- /.post-info -->                <p>After pnr.me was built, the next objective was to publicize it to potential users. We decided to publicize by posting in 4 different websites. We take you through our successes and failures</p>
-                <a class="readmore" href="http://blog.pnr.me/how-we-got-our-first-thousand-visitors.html">read more</a>
-<p>There are <a href="http://blog.pnr.me/how-we-got-our-first-thousand-visitors.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://blog.pnr.me/why-pnr-me-was-created-and-how-does-it-work.html" rel="bookmark"
-                           title="Permalink to Why we created pnr.me and how does it work?">Why we created pnr.me and how does it work?</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-11-18T00:00:00">
-                Mon 18 November 2013
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="http://blog.pnr.me/author/salil-panikkaveettil.html">Salil Panikkaveettil</a>
-        </address>
-<p>In <a href="http://blog.pnr.me/category/misc.html">misc</a>. </p>
-<p>tags: <a href="http://blog.pnr.me/tag/introduction.html">introduction</a><a href="http://blog.pnr.me/tag/pnr.html">pnr</a></p>
-</footer><!-- /.post-info -->                <p>pnr.me was created to help Indian Railways passengers to better predict their final pnr charting status. The problem we are trying to solve and solution are briefly discussed here</p>
-                <a class="readmore" href="http://blog.pnr.me/why-pnr-me-was-created-and-how-does-it-work.html">read more</a>
-<p>There are <a href="http://blog.pnr.me/why-pnr-me-was-created-and-how-does-it-work.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-            </ol><!-- /#posts-list -->
-            </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
