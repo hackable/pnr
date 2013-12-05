@@ -44,31 +44,31 @@
 <p>tags: <a href="http://blog.pnr.me/tag/500.html">500</a><a href="http://blog.pnr.me/tag/error.html">error</a><a href="http://blog.pnr.me/tag/internal-service-error.html">internal service error</a></p>
 </footer><!-- /.post-info -->      <p>We explained earlier <a href="http://blog.pnr.me/how-we-got-our-first-thousand-visitors.html" title="how our servers crashed after pnr.me was shared by Alok Rodinhood Kejriwal">how our servers went down crashing</a>, after being shared by <a href="https://www.facebook.com/rodinhood" title="Alok Rodinhood Kejriwal">mr rodinhood</a>. We needed a fix and we needed it fast</p>
 <h2>What the problem was not</h2>
-<p>One of our first assumption was that the error had something to do with apache. Reading a lot of hackernews makes you believe that apache is the culprit behind any server side error and nginx is the solution. But as we deepdived into the problem some things became very clear</p>
+<p>One of our first assumption was that the error had something to do with Apache. Reading a lot of hackernews makes you believe that Apache is the culprit behind any server side error and nginx is the solution. But as we deep dived into the problem some things became very clear</p>
 <ul>
-<li>Our apache server was never throttled</li>
+<li>Our Apache server was never throttled</li>
 <li>What went down was the application itself, to be more clear the <a href="http://pnr.me/predictor" title="pnr prediction engine">prediction engine of pnr.me</a></li>
 </ul>
 <h2>skeleton of pnr.me</h2>
-<p>pnr.me has two main components, a flask powered web app and a python predictor deamon communicating with each other using zmq. There is good reason why we arrived at this design. Predictor deamon is a number crunching application which required good amount of memory. To make matters worse, it was using <a href="http://www.scipy.org/" title="scientific python">scipy</a> which is a memory heavy python library. Hence it was not advisable to have the predictor application embedded in the web app as mod_wsgi will have a tough time serving this memory heavy app. </p>
-<p>Now call it bad code, our predictor deamon was throwing some exception and dying at regular intervals. To make the matter worse, we had not set up any kind of monitoring mechanism which would inform us when the predictor deamon goes down. As a ugly hack, we stumbled upon this beatiful code which would respawn a deamon if it gets killed or if it is stopped by some random reason</p>
-<div class="highlight"><pre><span class="k">until</span> <span class="o">(</span>python predictor_deamon.py<span class="o">)</span>; <span class="k">do</span>
+<p>pnr.me has two main components, a flask powered web app and a python predictor daemon communicating with each other using zmq. There is good reason why we arrived at this design. Predictor daemon is a number crunching application which required good amount of memory. To make matters worse, it was using <a href="http://www.scipy.org/" title="scientific python">scipy</a> which is a memory heavy python library. Hence it was not advisable to have the predictor application embedded in the web app as mod_wsgi will have a tough time serving this memory heavy app. </p>
+<p>Now call it bad code, our predictor daemon was throwing some exception and dying at regular intervals. To make the matter worse, we had not set up any kind of monitoring mechanism which would inform us when the predictor daemon goes down. As a ugly hack, we stumbled upon this beautiful code which would re spawn a daemon if it gets killed or if it is stopped by some random reason</p>
+<div class="highlight"><pre><span class="k">until</span> <span class="o">(</span>python predictor_daemon.py<span class="o">)</span>; <span class="k">do</span>
 <span class="k">    </span><span class="nb">echo</span> <span class="s2">&quot;Server &#39;myserver&#39; crashed with exit code $?.  Respawning..&quot;</span> &gt;&amp;2
     sleep 1
 <span class="k">done</span>
 </pre></div>
 
 
-<p>Internal service errors would still show for users but atleast it wouldn`t affect others from accessing the website</p>
+<p>Internal service errors would still show for users but at least it wouldn`t affect others from accessing the website</p>
 <h2>The web app</h2>
-<p>Once internal server error of predictor deamon got almost resolved, we were quite sure that we would not get any more internal service errors. As the great <a href="http://www.imdb.com/character/ch0000164/quotes" title="Thorin Oakenshield">Thorin Oakenshield</a> once said "I've never been so wrong in all my life".</p>
+<p>Once internal server error of predictor daemon got almost resolved, we were quite sure that we would not get any more internal service errors. As the great <a href="http://www.imdb.com/character/ch0000164/quotes" title="Thorin Oakenshield">Thorin Oakenshield</a> once said "I've never been so wrong in all my life".</p>
 <p>We deploy <a href="http://pnr.me" title="pnr.me">pnr.me</a> after doing basic testing. But these basic tests cannot handle blackswan errors like the one i recently faced. I was getting pymongo.errors.OperationFailure: quota exceeded error and because of this, the webapp was throwing an internal service error. How did pnr.me solve pymongo.errors.OperationFailure: quota exceeded when using MongoLab is a story for another blog post.</p>
 <p>We cannot solve all Blackswan events however hard we try. We needed an alert mechanism by which we could react fast to these errors. By following the beautiful articles on <a href="http://flask.pocoo.org/docs/errorhandling/" title="how to send automated mails when flask server throws an error">how to set up a SMTPHandler for flask</a> and how to use <a href="http://mynthon.net/howto/-/python/python%20-%20logging.SMTPHandler-how-to-use-gmail-smtp-server.txt" title="How to use Gmail SMTP server with logging module">GMail SMTP server with logging module</a>, we created a alert mechanism which would mail us the second any error is thrown by the flask web server</p>
 <h2>Final setup and improvement</h2>
 <ul>
 <li>We will be alerted by email when some error is thrown by flask.</li>
-<li>Our predictor deamon will respawn within a second of dying. We can fix the error later as all the errors are anyways logged</li>
-<li>A big TODO is to create such alerts for python jobs which run independant of the flask web service</li>
+<li>Our predictor daemon will re spawn within a second of dying. We can fix the error later as all the errors are anyways logged</li>
+<li>A big TODO is to create such alerts for python jobs which run independent of the flask web service</li>
 </ul>
     </div><!-- /.entry-content -->
     <div class="comments">
